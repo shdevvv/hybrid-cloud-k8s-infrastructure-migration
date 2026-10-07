@@ -1,0 +1,24 @@
+---
+- name: Security Hardening Target VM
+  hosts: webserver
+  become: yes
+  tasks:
+    - name: Disable root SSH login
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin'
+        line: 'PermitRootLogin no'
+      notify: restart ssh
+
+    - name: Ensure UFW is active and allow SSH
+      ufw:
+        rule: allow
+        port: '22'
+        proto: tcp
+        state: enabled
+
+  handlers:
+    - name: restart ssh
+      service:
+        name: ssh
+        state: restarted
