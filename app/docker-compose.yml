@@ -1,0 +1,36 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+    container_name: ecommerce-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+    container_name: ecommerce-backend
+    environment:
+      DB_HOST: database
+      DB_USER: ecommerce
+      DB_PASSWORD: ecommerce123
+      DB_NAME: ecommerce
+    depends_on:
+      - database
+
+  database:
+    image: mysql:8.0
+    container_name: ecommerce-database
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: ecommerce
+      MYSQL_USER: ecommerce
+      MYSQL_PASSWORD: ecommerce123
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
