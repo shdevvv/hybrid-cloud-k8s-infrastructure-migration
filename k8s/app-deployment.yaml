@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: web-app
 spec:
-  replicas: 2
+  replicas: 4
   selector:
     matchLabels:
       app: web-app
@@ -13,12 +13,12 @@ spec:
         app: web-app
     spec:
       containers:
-      - name: web-app
-        image: nginx:latest  # Ganti dengan image Docker aplikasi kamu
-        ports:
-        - containerPort: 80
-        env:
-        - name: DB_HOST
-          value: "mysql"
-        - name: DB_PASS
-          value: "password123"
+        - name: web-app
+          image: nginx:latest # Ganti dengan image Docker aplikasi kamu
+          ports:
+            - containerPort: 80
+          env:
+            - name: DB_HOST
+              value: "mysql"
+            - name: DB_PASS
+              value: "password123"
