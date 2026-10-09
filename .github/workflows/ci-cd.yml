@@ -70,7 +70,7 @@ jobs:
             ./app/backend
 
       - name: Trivy scan frontend
-        uses: aquasecurity/trivy-action@0.29.0
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: ghcr.io/${{ secrets.GHCR_USERNAME }}/ecommerce-frontend:${{ github.sha }}
           format: table
@@ -79,7 +79,7 @@ jobs:
           severity: CRITICAL,HIGH
 
       - name: Trivy scan backend
-        uses: aquasecurity/trivy-action@0.29.0
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: ghcr.io/${{ secrets.GHCR_USERNAME }}/ecommerce-backend:${{ github.sha }}
           format: table
