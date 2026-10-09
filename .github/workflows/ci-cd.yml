@@ -1,4 +1,3 @@
----
 name: E-Commerce CI/CD
 
 "on":
@@ -71,7 +70,7 @@ jobs:
             ./app/backend
 
       - name: Trivy scan frontend
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@0.29.0
         with:
           image-ref: ghcr.io/${{ secrets.GHCR_USERNAME }}/ecommerce-frontend:${{ github.sha }}
           format: table
@@ -80,7 +79,7 @@ jobs:
           severity: CRITICAL,HIGH
 
       - name: Trivy scan backend
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@0.29.0
         with:
           image-ref: ghcr.io/${{ secrets.GHCR_USERNAME }}/ecommerce-backend:${{ github.sha }}
           format: table
