@@ -1,0 +1,31 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cluster-alert-rules
+  namespace: monitoring
+  labels:
+    role: alert-rules
+    prometheus: kube-prometheus-stack
+spec:
+  groups:
+    - name: system-alerts
+      rules:
+        # Peringatan 1: Penggunaan CPU Tinggi (> 80%) selama 5 menit
+        - alert: HighCpuUsage
+          expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Peringatan Beban CPU Tinggi pada host: {{ $labels.instance }}"
+            description: "Penggunaan CPU telah melebihi 80% selama lebih dari 5 menit."
+
+        # Peringatan 2: Pod Mengalami CrashLoopBackOff
+        - alert: PodCrashLooping
+          expr: rate(kube_pod_container_status_restarts_total[5m]) * 60 > 2
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Pod terdeteksi CrashLoopBackOff: {{ $labels.pod }}"
+            description: "Pod {{ $labels.pod }} di namespace {{ $labels.namespace }} restart berulang kali dalam 5 menit terakhir."
